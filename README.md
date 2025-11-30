@@ -19,7 +19,7 @@ make
 ### Additional options
  - `C_COMPILER=compiler`
  - `C_FLAGS=additional_compiler_flags`
- - `LDSO=path_to_system_linker`
+ - `LDSO=custom_path_to_system_linker`
 
 ### Note
 `./getldso.sh` uses the options passed to `C_FLAGS`, so it detcts things like `-m32` or `--target=armv7-linux-gnueabihf -fuse-ld=lld`, so generally you only need to pass `LDSO`, the script failes to find the system linker in which case the C runtime probably doesn't work anyway
