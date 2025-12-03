@@ -14,8 +14,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
+    - name: Compile runtime
       run: make
 
-    - name: Run check
-      run: ./libMain.so
+    - name: Compile tests
+      run: |
+        echo -e "#inlude <stdio.h>\nint main() {printf("Executable works\n");}\nvoid print() {printf("Library works\n");}" > dll.c
+        echo "extern void print()\nint main() {print();}" > main.c
+        gcc -shared crt.o dll.c -o libdll.so
+        gcc main.c -L. -ldll
+
+    - name: Test
+      run: |
+        ./libdll.so
+        LD_LIBRARY_PATH=. ./a.out
