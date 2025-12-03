@@ -24,7 +24,8 @@ jobs:
         gcc -shared crt.o dll.c -o libdll.so
         gcc main.c -L. -ldll
 
-    - name: Test
-      run: |
-        ./libdll.so
-        LD_LIBRARY_PATH=. ./a.out
+    - name: Test Executable
+      run: ./libdll.so
+
+    - name: Test Shared Object
+      run: LD_LIBRARY_PATH=. ./a.out
