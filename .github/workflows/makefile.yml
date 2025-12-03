@@ -32,7 +32,7 @@ jobs:
       
   build-linux-arm64:
 
-    runs-on: ubuntu-latest-arm64
+    runs-on: ubuntu-24.04-arm
 
     steps:
     - uses: actions/checkout@v4
@@ -59,6 +59,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Install 32-bit libs
+      run: |
+        sudo apt install clang lld gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+
 
     - name: Compile runtime
       run: make C_COMPILER=clang C_FLAGS=-m32
