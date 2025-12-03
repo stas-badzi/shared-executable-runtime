@@ -9,7 +9,6 @@ endif
 endif
 crt.o:
 	sed "s/\$${LD_SO}/$$(echo "$(LDSO)" | sed "s/\//\\\\\//g")/g" crt.c | $(C_COMPILER) -x c - -c -s -o $@ $(C_FLAGS)
-	-strip -s $@
 
 clean:
 	@-rm tmp.c
