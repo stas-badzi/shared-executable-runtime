@@ -4,3 +4,4 @@ tmp
 *.out
 dll.c
 main.c
+*.so
