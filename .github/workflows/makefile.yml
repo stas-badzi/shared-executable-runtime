@@ -21,7 +21,7 @@ jobs:
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        gcc -shared crt.o dll.c -o libdll.so
+        gcc -shared -fPIC crt.o dll.c -o libdll.so
         gcc main.c -L. -ldll
 
     - name: Test Executable
@@ -44,7 +44,7 @@ jobs:
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        gcc -shared crt.o dll.c -o libdll.so
+        gcc -shared -fPIC crt.o dll.c -o libdll.so
         gcc main.c -L. -ldll
 
     - name: Test Executable
@@ -55,7 +55,7 @@ jobs:
       
   build-linux-x86:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
 
     steps:
     - uses: actions/checkout@v4
@@ -67,7 +67,7 @@ jobs:
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        gcc -m32 -shared crt.o dll.c -o libdll.so
+        gcc -m32 -shared -fPIC crt.o dll.c -o libdll.so
         gcc -m32 main.c -L. -ldll
 
     - name: Test Executable
@@ -78,7 +78,7 @@ jobs:
       
   build-linux-arm32:
 
-    runs-on: ubuntu-latest-arm64
+    runs-on: ubuntu-24.04-arm
 
     steps:
     - uses: actions/checkout@v4
@@ -90,7 +90,7 @@ jobs:
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        gcc -m32 -shared crt.o dll.c -o libdll.so
+        gcc -m32 -shared -fPIC crt.o dll.c -o libdll.so
         gcc -m32 main.c -L. -ldll
 
     - name: Test Executable
