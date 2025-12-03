@@ -15,14 +15,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Compile runtime
-      run: make
+      run: make C_COMPILER=clang
 
     - name: Compile tests
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        gcc -shared -fPIC crt.o dll.c -o libdll.so
-        gcc main.c -L. -ldll
+        clang -shared -fPIC crt.o dll.c -o libdll.so
+        clang main.c -L. -ldll
 
     - name: Test Executable
       run: ./libdll.so
@@ -38,14 +38,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Compile runtime
-      run: make
+      run: make C_COMPILER=clang
 
     - name: Compile tests
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        gcc -shared -fPIC crt.o dll.c -o libdll.so
-        gcc main.c -L. -ldll
+        clang -shared -fPIC crt.o dll.c -o libdll.so
+        clang main.c -L. -ldll
 
     - name: Test Executable
       run: ./libdll.so
@@ -61,14 +61,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Compile runtime
-      run: make C_FLAGS=-m32
+      run: make C_COMPILER=clang C_FLAGS=-m32
 
     - name: Compile tests
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        gcc -m32 -shared -fPIC crt.o dll.c -o libdll.so
-        gcc -m32 main.c -L. -ldll
+        clang -m32 -shared -fPIC crt.o dll.c -o libdll.so
+        clang -m32 main.c -L. -ldll
 
     - name: Test Executable
       run: ./libdll.so
@@ -84,14 +84,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Compile runtime
-      run: make C_FLAGS=-m32
+      run: make C_COMPILER=clang C_FLAGS=-m32
 
     - name: Compile tests
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        gcc -m32 -shared -fPIC crt.o dll.c -o libdll.so
-        gcc -m32 main.c -L. -ldll
+        clang -m32 -shared -fPIC crt.o dll.c -o libdll.so
+        clang -m32 main.c -L. -ldll
 
     - name: Test Executable
       run: ./libdll.so
