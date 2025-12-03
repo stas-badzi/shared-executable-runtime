@@ -19,8 +19,8 @@ jobs:
 
     - name: Compile tests
       run: |
-        echo -e "#include <stdio.h>\nint main() {printf("Executable works\n");}\nvoid print() {printf("Library works\n");}" > dll.c
-        echo "extern void print()\nint main() {print();}" > main.c
+        echo -e '#include <stdio.h>\nint main() {printf("Executable works\\n");}\nvoid print() {printf("Library works\\n");}' > dll.c
+        echo -e 'extern void print();\nint main() {print();}' > main.c
         gcc -shared crt.o dll.c -o libdll.so
         gcc main.c -L. -ldll
 
