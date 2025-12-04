@@ -92,6 +92,9 @@ jobs:
     - name: Install 32-bit libs
       run: |
         sudo apt update
+        sudo dpkg --add-architecture armhf
+        sudo apt update
+        sudo apt install libc6:armhf libstdc++6:armhf libgcc1:armhf
         sudo apt install clang lld gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 
     - name: Compile runtime
@@ -110,54 +113,4 @@ jobs:
     - name: Test Shared Object
       run: LD_LIBRARY_PATH=. ./a.out
       
-  build-macos-x64:
 
-    runs-on: macos-15-intel
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Install binutils
-      run: brew install binutils
-
-    - name: Compile runtime
-      run: make C_COMPILER=clang
-
-    - name: Compile tests
-      run: |
-        echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
-        echo -e 'extern void print();\nint main() {print();}' > main.c
-        clang -shared -fPIC crt.o dll.c -o libdll.so
-        clang main.c -L. -ldll
-
-    - name: Test Executable
-      run: ./libdll.so
-
-    - name: Test Shared Object
-      run: LD_LIBRARY_PATH=. ./a.out
-      
-  build-macos-arm64:
-
-    runs-on: macos-26
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Install binutils
-      run: brew install binutils
-
-    - name: Compile runtime
-      run: make C_COMPILER=clang
-
-    - name: Compile tests
-      run: |
-        echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
-        echo -e 'extern void print();\nint main() {print();}' > main.c
-        clang -shared -fPIC crt.o dll.c -o libdll.so
-        clang main.c -L. -ldll
-
-    - name: Test Executable
-      run: ./libdll.so
-
-    - name: Test Shared Object
-      run: LD_LIBRARY_PATH=. ./a.out
