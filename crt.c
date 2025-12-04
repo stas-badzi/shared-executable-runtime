@@ -9,7 +9,7 @@ void _start() {
 #elif __i386__
     __asm__("andl $-0x10,%esp");
 #else // ARM
-   __asm__("eor sp, sp, #-0x10");
+   __asm__("and sp, sp, #0xFFFFFFF0");
 #endif
     _exit(main());
 }
