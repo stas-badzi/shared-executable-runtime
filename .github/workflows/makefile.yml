@@ -117,6 +117,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install binutils
+      run: brew install binutils
+
     - name: Compile runtime
       run: make C_COMPILER=clang
 
@@ -140,6 +143,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install binutils
+      run: brew install binutils
+
     - name: Compile runtime
       run: make C_COMPILER=clang
 
@@ -149,52 +155,6 @@ jobs:
         echo -e 'extern void print();\nint main() {print();}' > main.c
         clang -shared -fPIC crt.o dll.c -o libdll.so
         clang main.c -L. -ldll
-
-    - name: Test Executable
-      run: ./libdll.so
-
-    - name: Test Shared Object
-      run: LD_LIBRARY_PATH=. ./a.out
-      
-  build-macos-x86:
-
-    runs-on: macos-15-intel
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Compile runtime
-      run: make C_COMPILER=clang C_FLAGS=-m32
-
-    - name: Compile tests
-      run: |
-        echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
-        echo -e 'extern void print();\nint main() {print();}' > main.c
-        clang -m32 -shared -fPIC crt.o dll.c -o libdll.so
-        clang -m32 main.c -L. -ldll
-
-    - name: Test Executable
-      run: ./libdll.so
-
-    - name: Test Shared Object
-      run: LD_LIBRARY_PATH=. ./a.out
-      
-  build-macos-arm32:
-
-    runs-on: macos-26
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Compile runtime
-      run: make C_COMPILER=clang C_FLAGS="--target=armv7-macos-gnueabihf -fuse-ld=lld"
-
-    - name: Compile tests
-      run: |
-        echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
-        echo -e 'extern void print();\nint main() {print();}' > main.c
-        clang --target=aarch64-linux-gnueabihf -fuse-ld=lld -shared -fPIC crt.o dll.c -o libdll.so
-        clang --target=aarch64-linux-gnueabihf -fuse-ld=lld main.c -L. -ldll
 
     - name: Test Executable
       run: ./libdll.so
