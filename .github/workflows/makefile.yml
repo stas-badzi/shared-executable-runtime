@@ -95,14 +95,14 @@ jobs:
         sudo apt install clang lld gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 
     - name: Compile runtime
-      run: make C_COMPILER=clang C_FLAGS=-m32
+      run: make C_COMPILER=clang C_FLAGS=""--target=aarch64-linux-gnueabihf -fuse-ld=lld"
 
     - name: Compile tests
       run: |
         echo -e '#include <stdio.h>\nint main() {fprintf(stderr,"Executable works\\n");}\nvoid print() {fprintf(stderr,"Library works\\n");}' > dll.c
         echo -e 'extern void print();\nint main() {print();}' > main.c
-        clang -m32 -shared -fPIC crt.o dll.c -o libdll.so
-        clang -m32 main.c -L. -ldll
+        clang --target=aarch64-linux-gnueabihf -fuse-ld=lld -shared -fPIC crt.o dll.c -o libdll.so
+        clang --target=aarch64-linux-gnueabihf -fuse-ld=lld main.c -L. -ldll
 
     - name: Test Executable
       run: ./libdll.so
